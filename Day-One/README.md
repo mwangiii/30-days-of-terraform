@@ -164,4 +164,14 @@ A more detailed breakdown of what I learned is shared in my blog post below.
 
 ## Blog Post
 
-[Read here](your-linkedin-article-link)
+[Read here](https://medium.com/@mwangi8kevin/what-is-infrastructure-as-code-and-why-its-transforming-devops-447ab0f62df6)
+
+## Conclusion
+
+Day 1 focused on building the foundation by setting up the environment and understanding the role of Infrastructure as Code in modern systems.
+
+With Terraform and AWS fully configured, the next step is to start writing Terraform code and provisioning infrastructure.
+
+**SEE YOU ON DAY 2. TIME TO START BUILDING!**
+
+![Let the party begin gif](https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExcnA3MGY1ODN4MXJtajNxdjByaWNkdDZucGQ0c3ZwaGlpc2wxbXltcSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/2vqd1nnQVhp8rneZVi/giphy.gif)
