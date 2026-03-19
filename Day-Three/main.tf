@@ -5,7 +5,7 @@ provider "aws" {
 
 # This block configured the security group and labels it 
 resource "aws_security_group" "web_sg" {
-  name = "web-sg"
+  name = "web-sg-two"
 
   # Allowing http traffic by opening port 80
   ingress {

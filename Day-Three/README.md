@@ -1,6 +1,8 @@
 # DAY THREE: DEPLOYING YOUR FIRST SERVER WITH TERRAFORM
 
-  ![](assets/cover.jpeg)
+<div style="text-align: center;">
+  <img src="assets/cover.jpeg" style="max-width: 100%; height: auto;" />
+</div>
 
 ## Project Setup
 
@@ -376,4 +378,42 @@ This was the first complete end-to-end deployment using Terraform.
 After confirming the server was working, the infrastructure was destroyed to avoid unnecessary cloud costs.
 
 ```bash
-terraform destroy
+  terraform destroy
+```
+
+Terraform displayed the resources to be removed:
+
+```
+Plan: 0 to add, 0 to change, 2 to destroy.
+```
+
+![](assets/14.png)
+
+After confirmation:
+
+```
+yes
+```
+
+Terraform removed all resources:
+```
+  Destroy complete! Resources: 2 destroyed.
+```
+
+Verification
+```bash
+  terraform state list
+```
+
+![](assets/15.png)
+
+```bash
+  terraform output
+```
+
+![](assets/16.png)
+
+Returned no resources, confirming that all infrastructure had been successfully deleted.
+
+### Key Learning
+Terraform not only provisions infrastructure but also cleanly removes it, ensuring no unused resources continue running and incurring costs.
