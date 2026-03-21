@@ -4,6 +4,8 @@
   <img src="assets/cover.jpeg" style="max-width: 100%; height: auto;" />
 </div>
 
+![](assets/cover.jpeg)
+
 ## Project Setup
 
 A new project directory was created to hold the Terraform configuration.
