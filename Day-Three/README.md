@@ -14,10 +14,20 @@ A new project directory was created to hold the Terraform configuration.
   code main.tf
 ```
 
+## Architecture Diagram
+
+The diagram below represents the final deployed architecture:
+
+- Internet traffic enters via HTTP (port 80)
+- Security group allows HTTP (80) and SSH (22)
+- EC2 instance runs Ubuntu and Nginx
+- Hosted in AWS (eu-north-1 region)
+
+![](assets/flowDIagram.jpeg)
+
 ## Provider Block
 
 The provider block defines which cloud provider Terraform will use and the region where resources will be created.
- 
 
 ```hcl
 provider "aws" {
@@ -40,10 +50,9 @@ resource "aws_instance" "web" {
 }
 ```
 
-_**NOTE**: This defines an EC2 instance to be created in AWS. The AMI specifies the operating system image, and the instance type defines the size of the server._
+***NOTE**: This defines an EC2 instance to be created in AWS. The AMI specifies the operating system image, and the instance type defines the size of the server.*
 
 ![Resource Block](assets/2.png)
-
 
 ## Terraform Initialization
 
@@ -67,12 +76,12 @@ After defining the provider and resource blocks, Terraform was initialized to pr
 
   Terraform has been successfully initialized!
 ```
+
 ![](assets/3.png)
 
 ### Explanation
 
 This step prepares Terraform to run by downloading the AWS provider plugin and creating a lock file to ensure consistent versions across runs. It also sets up the working directory so Terraform can manage infrastructure correctly.
-
 
 ## Terraform Plan
 
@@ -96,8 +105,8 @@ This step shows what Terraform is about to create without actually provisioning 
 
 The plan confirms that:
 
-* One EC2 instance (`aws_instance.web`) will be created
-* No existing infrastructure will be modified or destroyed
+- One EC2 instance (`aws_instance.web`) will be created
+- No existing infrastructure will be modified or destroyed
 
 Most values are marked as:
 
@@ -107,12 +116,11 @@ Most values are marked as:
 
 This means Terraform will only know those values after the resource is created. For example:
 
-* public IP
-* instance ID
-* DNS name
+- public IP
+- instance ID
+- DNS name
 
 This step is critical because it acts as a safety check before making real changes to cloud infrastructure.
-
 
 ## Deployment Attempt and Fix
 
@@ -154,7 +162,6 @@ Updated configuration:
 
 ![](assets/6.png)
 
-
 ### Second Attempt (Successful)
 
 After updating the AMI, I ran:
@@ -177,13 +184,12 @@ Terraform successfully created the EC2 instance:
 
 ![](assets/7.png)
 
-
-
 ### Key Learning
 
 AMI IDs are region-specific. Using the wrong AMI for a region will cause deployment to fail. Always verify the AMI in the AWS region you are working in.
 
 ---
+
 ## MAKING THE SERVER ACCESSIBLE
 
 Although the EC2 instance was successfully created, it was not accessible via the browser.
@@ -203,53 +209,45 @@ returned:
 ```bash
 Warning: No outputs found
 ```
-![](assets/130.png)
 
+![](assets/130.png)
 
 This indicated two issues:
 
-* The instance existed but was not reachable over the network
-* The Terraform configuration was missing an output definition
-
-
+- The instance existed but was not reachable over the network
+- The Terraform configuration was missing an output definition
 
 ### Identifying the Problem
 
 The root causes were:
 
-* No **HTTP (port 80)** access configured in the security group
-* No **SSH (port 22)** access for debugging
-* No **output block** to retrieve the public IP
-* The server had **no web server installed**, so even if reachable, nothing would respond
-
-
+- No **HTTP (port 80)** access configured in the security group
+- No **SSH (port 22)** access for debugging
+- No **output block** to retrieve the public IP
+- The server had **no web server installed**, so even if reachable, nothing would respond
 
 ### Fix: Updating Security and Server Configuration
 
 To resolve this:
 
-* A **security group** was added to allow:
+- A **security group** was added to allow:
 
-  * HTTP (port 80)
-  * SSH (port 22)
-* A **user_data script** was introduced to install and start a web server
-* An **output block** was added to expose the public IP
+  - HTTP (port 80)
+  - SSH (port 22)
+- A **user_data script** was introduced to install and start a web server
+- An **output block** was added to expose the public IP
 
 ![](assets/10.png)
 
 ***NOTE**: Port 80 allows browser access, while port 22 allows SSH for troubleshooting.*
 
-
-
 ### Switching to Ubuntu and Nginx
 
 To simplify provisioning and avoid OS inconsistencies:
 
-* Switched to **Ubuntu 22.04 LTS**
-* Replaced Apache with **Nginx**
-* Updated provisioning commands to use `apt`
-
-
+- Switched to **Ubuntu 22.04 LTS**
+- Replaced Apache with **Nginx**
+- Updated provisioning commands to use `apt`
 
 ### Updating the Instance (Terraform Apply)
 
@@ -272,8 +270,6 @@ Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
 ```
 
 ![](assets/11.png)
-
-
 
 ### Verifying the Fix
 
@@ -299,12 +295,9 @@ http://<public_ip>
 
 The server successfully responded with the deployed page:
 
-* Nginx was running
-* The HTML content from `user_data` was served correctly
-* The infrastructure was now fully accessible over the internet
-
-
-
+- Nginx was running
+- The HTML content from `user_data` was served correctly
+- The infrastructure was now fully accessible over the internet
 
 ## Final Terraform Configuration
 
@@ -367,9 +360,9 @@ output "public_ip" {
 
 Provisioning infrastructure is only one part of the process. Making services accessible requires:
 
-* Proper network configuration (security groups)
-* Correct OS-level setup (web server installation)
-* Choosing the right base image to reduce complexity
+- Proper network configuration (security groups)
+- Correct OS-level setup (web server installation)
+- Choosing the right base image to reduce complexity
 
 This was the first complete end-to-end deployment using Terraform.
 
@@ -396,11 +389,13 @@ yes
 ```
 
 Terraform removed all resources:
+
 ```
   Destroy complete! Resources: 2 destroyed.
 ```
 
 Verification
+
 ```bash
   terraform state list
 ```
@@ -416,4 +411,5 @@ Verification
 Returned no resources, confirming that all infrastructure had been successfully deleted.
 
 ### Key Learning
+
 Terraform not only provisions infrastructure but also cleanly removes it, ensuring no unused resources continue running and incurring costs.
