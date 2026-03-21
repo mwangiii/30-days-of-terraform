@@ -1,9 +1,6 @@
 # DAY THREE: DEPLOYING YOUR FIRST SERVER WITH TERRAFORM
 
-<p align="center">
-  <img src="assets/cover.jpeg" />
-</p>
-
+![](assets/cover.jpeg)
 
 ## Project Setup
 
