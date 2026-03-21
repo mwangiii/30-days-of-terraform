@@ -1,10 +1,9 @@
 # DAY THREE: DEPLOYING YOUR FIRST SERVER WITH TERRAFORM
 
-<div style="text-align: center;">
-  <img src="assets/cover.jpeg" style="max-width: 100%; height: auto;" />
-</div>
+<p align="center">
+  <img src="assets/cover.jpeg" />
+</p>
 
-![](assets/cover.jpeg)
 
 ## Project Setup
 
